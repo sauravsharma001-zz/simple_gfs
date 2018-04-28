@@ -70,8 +70,7 @@ public class TCPClient {
                 System.out.println();
                 System.out.println("---------------------------------------------------");
                 System.out.println("Request No: " + i);
-                operationID = 0;
-//                operationID = clientInfo.rand.nextInt(clientInfo.typeOfOperations.size());
+                operationID = clientInfo.rand.nextInt(clientInfo.typeOfOperations.size());
                 fileID = clientInfo.rand.nextInt(noOfFile) + 1;
                 if(operationID < 1)   {
 
@@ -104,8 +103,7 @@ public class TCPClient {
                                 if(chunk.contains("Not Available")) {
                                     fileContent.append("Unable to read chunk, Server is Down");
                                 }
-                                else if(chunk != null && chunk.length() > 0){
-//                                    System.out.println("chunk " + chunk);
+                                else if(chunk.length() > 0){
                                     int sId = Integer.valueOf(chunk.split(",")[1].trim());
                                     String chunkName = chunk.split(",")[0];
                                     Socket fileServer = new Socket(clientInfo.serverAddress.get(sId - 1), clientInfo.serverPort);
@@ -149,13 +147,9 @@ public class TCPClient {
                     out.writeUTF("Client ID: " + clientInfo.clientID + "; " + clientInfo.typeOfOperations.get(operationID) + noOfFile + ";");
                     String msgFromMetadata = in.readUTF();
                     System.out.println("Message Received from Metadata Server: " + msgFromMetadata);
-//                    Socket fileServer = new Socket(clientInfo.serverAddress.get(sId-1), clientInfo.serverPort);
-//                    DataInputStream infileServer = new DataInputStream(fileServer.getInputStream());
-//                    DataOutputStream outfileServer = new DataOutputStream(fileServer.getOutputStream());
-//                    outfileServer.writeUTF("Client ID: " + clientInfo.clientID + "; " + "CREATE: " + fileID++ + ";");
                 }
 
-//                System.out.println("Request Over");
+                System.out.println("Request Over");
                 System.out.println("---------------------------------------------------");
                 metadataServerSocket.close();
                 Thread.sleep(3000);
