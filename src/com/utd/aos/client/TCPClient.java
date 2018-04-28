@@ -72,7 +72,7 @@ public class TCPClient {
                 System.out.println("Request No: " + i);
                 operationID = clientInfo.rand.nextInt(clientInfo.typeOfOperations.size());
                 fileID = clientInfo.rand.nextInt(noOfFile) + 1;
-                if(operationID < 1)   {
+                if(operationID < 2)   {
 
                     DataInputStream in = new DataInputStream(metadataServerSocket.getInputStream());
                     DataOutputStream out = new DataOutputStream(metadataServerSocket.getOutputStream());
@@ -122,8 +122,8 @@ public class TCPClient {
                             System.out.println(msgFromMetadata);
                         }
                     } else  {
-                        System.out.println("Operation " + clientInfo.typeOfOperations.get(operationID).substring(0, clientInfo.typeOfOperations.get(operationID).length() - 2) + " " + fileID);
                         String content = "New line Added";
+                        System.out.println("Operation " + clientInfo.typeOfOperations.get(operationID).substring(0, clientInfo.typeOfOperations.get(operationID).length() - 2) + " " + fileID + "; Content: " + content + ";");
                         out.writeUTF("Client ID: " + clientInfo.clientID + "; " + clientInfo.typeOfOperations.get(operationID) + fileID + "; Content: " + content + ";");
                         String msgFromMetadata = in.readUTF();
                         System.out.println("Message Received from Metadata Server: " + msgFromMetadata);
@@ -149,11 +149,11 @@ public class TCPClient {
                     System.out.println("Message Received from Metadata Server: " + msgFromMetadata);
                 }
 
-                System.out.println("Request Over");
                 System.out.println("---------------------------------------------------");
                 metadataServerSocket.close();
                 Thread.sleep(3000);
             }
+            System.out.println("Request Over");
             System.out.println();
             Thread.sleep(15000);
         } catch (IOException ioEx) {

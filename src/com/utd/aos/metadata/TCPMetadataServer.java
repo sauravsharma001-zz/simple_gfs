@@ -110,7 +110,6 @@ public class TCPMetadataServer extends TimerTask {
                             }
                             else    {
                                 Map fileMetadata = new LinkedHashMap();
-//                                fileMetadata.put(fileInfo[0].split("_")[1], fileInfo[1] + "," + fileInfo[2]);
                                 fileMetadata.put(fileInfo[0].split("_")[1], fileDetail.substring(fileDetail.indexOf(";")+1));
                                 serverName.fileDetail.put(fileName, fileMetadata);
                                 serverName.lastUpdatedTimeStamp = Instant.now();
@@ -138,10 +137,6 @@ public class TCPMetadataServer extends TimerTask {
                                 int activeServerId = 1;
                                 int id = rand.nextInt(tempServerList.size());
                                 Iterator<Integer> it = tempServerList.iterator();
-                                while (it.hasNext()) {
-                                    System.out.println(id + "  " + tempServerList.size() + "  " + it.next());
-                                }
-                                it = tempServerList.iterator();
                                 while (it.hasNext() && id >= 0) {
                                     activeServerId = it.next();
                                     id--;
@@ -178,12 +173,13 @@ public class TCPMetadataServer extends TimerTask {
                         if (msg.contains("WRITE: ")) {
                             String fileContent = msg.split(";")[2].split(":")[1].trim();
                             for (String s : fileLocationDetail.get(fileName)) {
-                                if(s.contains("00"+fileLocationDetail.get(fileName).size()+".txt"))   {
+//                                System.out.println("s: " + s + " " + fileLocationDetail.get(fileName).size()/3);
+                                if(s.contains("00"+ (fileLocationDetail.get(fileName).size()/3) +".txt"))   {
                                     int ser = Integer.valueOf(s.split(",")[1]);
                                     if(ClientList.get(ser).alive) {
                                         ClientInfo serverName = ClientList.get(ser);
                                         int fileSize = Integer.valueOf(serverName.fileDetail.get(fileName)
-                                                            .get("00" + fileLocationDetail.get(fileName).size() + ".txt")
+                                                            .get("00" + fileLocationDetail.get(fileName).size()/3 + ".txt")
                                                             .toString().split(",")[1]);
 //                                        System.out.println("File Size: " + fileSize);
                                         if(fileSize + fileContent.length() < chunkSize) {
@@ -202,7 +198,7 @@ public class TCPMetadataServer extends TimerTask {
                                             Socket serverForFileCreation = new Socket(ClientList.get(activeServerId).address, port);
                                             DataInputStream in1 = new DataInputStream(serverForFileCreation.getInputStream());
                                             DataOutputStream out1 = new DataOutputStream(serverForFileCreation.getOutputStream());
-                                            int chunk = fileLocationDetail.get(fileName).size() + 1;
+                                            int chunk = fileLocationDetail.get(fileName).size()/3 + 1;
                                             out1.writeUTF("Metadata Client ID: 1; CREATE: " + fileName + "; Chunk: " + chunk + ";");
                                             String msg1 = in1.readUTF();
 //                                          System.out.println("Received: " + msg1);
