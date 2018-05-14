@@ -1,4 +1,4 @@
-* Simple Google File System *
+# Simple Google File System
 
 Designed a distributed system with multiple clients and server, and a metadata server. Metadata server maintains metadata about files in the file system and is also responsible to keep track of all alive servers. A file is made up of multiple chunks of fixed size and each chunk has 3 replicas in 3 different servers. 
 Clients can perform following operations:
